@@ -34,7 +34,7 @@ cellranger_outs_folder_positive <- "/icgc/dkfzlsdf/analysis/hipo2/hipo_K43R/cell
 cellranger_outs_folder_negative <- "/icgc/dkfzlsdf/analysis/hipo2/hipo_K43R/cellranger_results_v3/K43R-8YGUU8-Z4/outs/"
 # outputs
 cell.annotation.name <- "cellAnnotations_K43R-8YGUU8-T4Z4.txt"
-counts.matrix.name <- "sc.10x.counts_K43R-8YGUU8-T4Z4.matrix"
+counts.sparse.matrix.name <- "sc.10x.counts_K43R-8YGUU8-T4Z4.RData"
 
 
 # Accomodating 10X Data
@@ -69,29 +69,24 @@ getBarcodeNames <- function(cellranger_outs_folder){
 mat.pos <- getCountMat(cellranger_outs_folder = cellranger_outs_folder_positive)
 mat.neg <- getCountMat(cellranger_outs_folder = cellranger_outs_folder_negative)
 
-mat.pos.matrix <- as.matrix( mat.pos ) 
-mat.neg.matrix <- as.matrix( mat.neg )
+# add label for cells
+colnames(mat.pos) <- paste0(colnames(mat.pos),"pos")
+colnames(mat.neg) <- paste0(colnames(mat.neg),"neg")
 
-rm(mat.pos)
-rm(mat.neg)
+if(identical(rownames(mat.pos),rownames(mat.neg))){
+  mat.matrix.sparse <- cbind(mat.pos, mat.neg)
+} else {
+  message("mat.pos and mat.neg have different number or rownames")
+  stop()
+}
 
 # < check >
-dim(mat.pos.matrix)
-dim(mat.neg.matrix)
-nrow(mat.pos.matrix) == nrow(mat.neg.matrix)
-
-# add label for cells
-colnames(mat.pos.matrix) <- paste0(colnames(mat.pos.matrix),"pos")
-colnames(mat.neg.matrix) <- paste0(colnames(mat.neg.matrix),"neg")
+dim(mat.pos)
+dim(mat.neg)
+dim(mat.matrix.sparse)
 
 # merge pos and neg
-
-mat.df <-merge(x = mat.pos.matrix, y = mat.neg.matrix, by="row.names")
-
-mat.matrix <- as.matrix( mat.df[,-1] )
-rownames(mat.matrix) <- mat.df[,1]
-
-write.table(round(mat.matrix, digits=3), file=counts.matrix.name, quote=F, sep="\t")  # to improve                 
+save(mat.matrix.sparse, file = counts.sparse.matrix.name,compress = T)
 
 # cell annotations
 cells.pos <- paste0(getBarcodeNames(cellranger_outs_folder = cellranger_outs_folder_positive),"pos")
@@ -104,6 +99,8 @@ cellAnnotations <- data.frame(cell_ids=c(cells.pos, cells.neg),
 # cellAnnotations <- data.frame(cell_ids=c(cells.pos, cells.neg),
 #                               annotation=c( rep("T1",length(cells.pos)), rep("N1",length(cells.neg))),
 #                               stringsAsFactors = F)
+
+
 
 write.table(cellAnnotations[,1:2], file=cell.annotation.name, col.names = F, row.names = F,quote=F, sep="\t")                   
 
