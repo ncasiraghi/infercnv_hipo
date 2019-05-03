@@ -4,17 +4,19 @@ library( Matrix )
 wd <- "/icgc/dkfzlsdf/analysis/hipo2/hipo_K43R/InferCNV/"
 setwd(wd)
 
-counts.matrix.name <- file.path(wd,"sc.10x.counts_K43R-8YGUU8-T3Z3.matrix")
-cell.annotation.name <- file.path(wd,"cellAnnotations_K43R-8YGUU8-T3Z3.txt")
-out.folder.name <- file.path(wd,"K43R-8YGUU8-T3Z3")
+counts.sparse.matrix.name <- file.path(wd,"sc.10x.counts_K43R-8YGUU8-T4Z4.RData")
+cell.annotation.name <- file.path(wd,"cellAnnotations_K43R-8YGUU8-T4Z4.txt")
+out.folder.name <- file.path(wd,"K43R-8YGUU8-T4Z4")
+
+load(counts.sparse.matrix.name)
 
 # create the infercnv object
-infercnv_obj = CreateInfercnvObject(raw_counts_matrix=counts.matrix.name,
+infercnv_obj = CreateInfercnvObject(raw_counts_matrix=mat.matrix.sparse,
                                     annotations_file=cell.annotation.name,
                                     delim="\t",
                                     gene_order_file="gene_ordering_file.txt",
                                     ref_group_names=c("normal"))
-                                    #ref_group_names=NULL)
+#ref_group_names=NULL)
 
 # perform infercnv operations to reveal cnv signal
 infercnv_obj = infercnv::run(infercnv_obj,
