@@ -3,7 +3,7 @@ library( Matrix )
 wd <- "/icgc/dkfzlsdf/analysis/hipo2/hipo_K43R/InferCNV/"
 setwd(wd)
 
-source("/icgc/dkfzlsdf/analysis/hipo2/hipo_K43R/InferCNV/infercnv_hipo/hipo_samples_configure_file.R")
+source("infercnv_hipo/hipo_samples_configure_file.R")
 
 # Accomodating 10X Data
 
@@ -34,21 +34,50 @@ getBarcodeNames <- function(cellranger_outs_folder){
 }
 
 # get count matrix
-mat.pos <- getCountMat(cellranger_outs_folder = cellranger_outs_folder_positive)
-mat.neg <- getCountMat(cellranger_outs_folder = cellranger_outs_folder_negative)
 
-# add label for cells
-colnames(mat.pos) <- paste0(colnames(mat.pos),"pos")
-colnames(mat.neg) <- paste0(colnames(mat.neg),"neg")
+mat.pos.list <- lapply( cellranger_outs_folder_positive, getCountMat )
+mat.neg.list <- lapply( cellranger_outs_folder_negative, getCountMat )
 
-if(identical(rownames(mat.pos),rownames(mat.neg))){
-  mat.matrix.sparse <- cbind(mat.pos, mat.neg)
-} else {
-  message("mat.pos and mat.neg have different number or rownames")
-  stop()
+genes <- unique(unlist(lapply(mat.pos.list, rownames)))
+
+filter_genes <- function(x, genes){
+  x <- x[genes,]
+  return(x)
 }
 
-# < check >
+mat.pos.list <- lapply(mat.pos.list, filter_genes, genes)
+
+# add label for cells from the same sample
+for(i in seq(length(mat.pos.list))){
+  colnames(mat.pos.list[[i]]) <- paste0(colnames(mat.pos.list[[i]]), paste0("pos_",labels.pos[i]))
+}
+
+for(i in seq(length(mat.neg.list))){
+  colnames(mat.neg.list[[i]]) <- paste0(colnames(mat.neg.list[[i]]), "neg")
+}
+
+check_and_merge <- function(sparse_matrix_list){
+  check.cols <- c()
+  if(length(sparse_matrix_list) < 2){
+    return(sparse_matrix_list[[1]])
+  }
+  combtab <- combn(x = seq(length(sparse_matrix_list)),m = 2)
+  for(i in seq(ncol(combtab))){
+    check.cols <- identical(rownames(sparse_matrix_list[[combtab[1,i]]]), rownames(sparse_matrix_list[[combtab[2,i]]]))
+  }
+  if(all(check.cols)){
+    mat.pos <- do.call(cbind, sparse_matrix_list)
+    return(mat.pos)
+  } else {
+    return(NULL)
+  }
+}
+
+mat.pos <- check_and_merge(sparse_matrix_list = mat.pos.list)
+mat.neg <- check_and_merge(sparse_matrix_list = mat.neg.list)
+
+mat.matrix.sparse <- check_and_merge(sparse_matrix_list = list(mat.pos,mat.neg))
+
 dim(mat.pos)
 dim(mat.neg)
 dim(mat.matrix.sparse)
@@ -57,19 +86,19 @@ dim(mat.matrix.sparse)
 save(mat.matrix.sparse, file = counts.sparse.matrix.name,compress = T)
 
 # cell annotations
-cells.pos <- paste0(getBarcodeNames(cellranger_outs_folder = cellranger_outs_folder_positive),"pos")
-cells.neg <- paste0(getBarcodeNames(cellranger_outs_folder = cellranger_outs_folder_negative),"neg")
 
-cellAnnotations <- data.frame(cell_ids=c(cells.pos, cells.neg),
-                              annotation=c( rep("tumor",length(cells.pos)), rep("normal",length(cells.neg))),
+cellAnnotations <- data.frame(cell_ids=colnames(mat.matrix.sparse),
+                              annotation=c(rep(labels.pos,as.numeric(lapply(mat.pos.list,ncol))),
+                                           rep("normal",as.numeric(lapply(mat.neg.list,ncol)))
+                                           ),
                               stringsAsFactors = F)
 
+# only when mixed positive and negative fractions
 # cellAnnotations <- data.frame(cell_ids=c(cells.pos, cells.neg),
 #                               annotation=c( rep("T1",length(cells.pos)), rep("N1",length(cells.neg))),
 #                               stringsAsFactors = F)
 
-
-write.table(cellAnnotations[,1:2], file=cell.annotation.name, col.names = F, row.names = F,quote=F, sep="\t")                   
+write.table(cellAnnotations, file=cell.annotation.name, col.names = F, row.names = F,quote=F, sep="\t")                   
 
 # genes ordering
 if( FALSE ){

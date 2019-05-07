@@ -4,9 +4,9 @@ library( Matrix )
 wd <- "/icgc/dkfzlsdf/analysis/hipo2/hipo_K43R/InferCNV/"
 setwd(wd)
 
-counts.sparse.matrix.name <- file.path(wd,"sc.10x.counts_K43R-8YGUU8-T4Z4.RData")
-cell.annotation.name <- file.path(wd,"cellAnnotations_K43R-8YGUU8-T4Z4.txt")
-out.folder.name <- file.path(wd,"K43R-8YGUU8-T4Z4")
+counts.sparse.matrix.name <- file.path(wd,"sc.10x.counts_K43R-ZPMZFJ-T1T2-N1.RData")
+cell.annotation.name <- file.path(wd,"cellAnnotations_K43R-ZPMZFJ-T1T2-N1.txt")
+out.folder.name <- file.path(wd,"K43R-ZPMZFJ-T1T2-N1")
 
 load(counts.sparse.matrix.name)
 

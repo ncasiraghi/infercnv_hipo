@@ -4,9 +4,17 @@ library( Seurat )
 wd <- "/icgc/dkfzlsdf/analysis/hipo2/hipo_K43R/InferCNV/"
 setwd(wd)
 
-#sample.name <- "K43R-8YGUU8-T2"
-sample.name <- "K43R-8YGUU8-T3"
-#sample.name <- "K43R-ZPMZFJ-T1"
+# sample.name <- "K43R-ZPMZFJ-T1"
+# infercnv_folder_outout <- "K43R-ZPMZFJ-T1N1"
+
+sample.name <- "K43R-8YGUU8-T2"
+infercnv_folder_outout <- "K43R-8YGUU8-T2Z2"
+
+# sample.name <- "K43R-8YGUU8-T3"
+# infercnv_folder_outout <- "K43R-8YGUU8-T3Z3"
+
+# sample.name <- "K43R-8YGUU8-T4"
+# infercnv_folder_outout <- "K43R-8YGUU8-T4Z4"
 
 cellranger_outs_folder_positive <- file.path("/icgc/dkfzlsdf/analysis/hipo2/hipo_K43R/cellranger_results_v3",sample.name,"/outs/filtered_feature_bc_matrix/")
 seu.data <- Read10X(cellranger_outs_folder_positive)
@@ -65,6 +73,7 @@ DimPlot(object = seu, reduction = "tsne")
 save(seu, file = paste0(sample.name,".RData"),compress = T)
 
 # integrate with infercnv output
+
 # load(paste0(sample.name,".RData"))
 
 head(seu@reductions$umap@cell.embeddings)
@@ -75,14 +84,13 @@ FeaturePlot(object = seu,reduction = "tsne",features = "CCND1")
 
 library( phylogram )
 
-infercnv_folder_outout <- "K43R-8YGUU8-T3Z3"
-
 dend <- as.hclust( read.dendrogram(file.path(infercnv_folder_outout,"infercnv.observations_dendrogram.txt") ))
 class(dend)
+
 plot(dend,labels = FALSE,hang = -1,xlab = "scRNA",ylab = "distance",main = sample.name)
 
 # cut the tree 
-g <- cutree(dend,k = 5)
+g <- cutree(dend,k = 4)
 
 groups <- data.frame(barcode=gsub(names(g),pattern = "-1pos",replacement = ""),
                      cluster=as.numeric(g),
@@ -98,7 +106,7 @@ a$col <- adjustcolor(a$cluster,alpha.f = .6)
 
 par(pty="s",mfrow=c(1,2))
 #plot(x = a$tSNE_1,y = a$tSNE_2,pch=16,col=grey(.3,.3))
-plot(x = a$tSNE_1,y = a$tSNE_2,pch=20,col=a$col,main=infercnv_folder_outout)
+plot(x = a$tSNE_1,y = a$tSNE_2,pch=20,col=a$col)
 
 library( ape )
 
