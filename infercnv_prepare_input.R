@@ -48,14 +48,6 @@ if(is.na(cellranger_outs_folder_negative)){
   mat.neg.list <- lapply( cellranger_outs_folder_negative, getCountMat )
 }
 
-# genes <- unique(unlist(lapply(mat.pos.list, rownames)))
-# 
-# filter_genes <- function(x, genes){
-#   x <- x[genes,]
-#   return(x)
-# }
-# mat.pos.list <- lapply(mat.pos.list, filter_genes, genes)
-
 # add label for cells from the same sample
 for(i in seq(length(mat.pos.list))){
   colnames(mat.pos.list[[i]]) <- paste0(colnames(mat.pos.list[[i]]), paste0("pos_",labels.pos[i]))
@@ -76,18 +68,23 @@ check_and_merge <- function(sparse_matrix_list){
     genes_in_common[[i]] <- intersect(rownames(sparse_matrix_list[[combtab[1,i]]]), rownames(sparse_matrix_list[[combtab[2,i]]]))
   }
   
-  # only for 2 matrices : to be improved
-  genes_in_common <- unlist(genes_in_common)
+  cg <- genes_in_common[[1]]
+  if(length(genes_in_common) > 1 ){
+    for(i in 2:length(genes_in_common)){
+      cg <- intersect(cg,genes_in_common[[i]])
+    }
+  }
   
   filter_genes <- function(x, genes){
     x <- x[genes,]
     return(x)
   }
   
-  sparse_matrix_list <- lapply(sparse_matrix_list, filter_genes, genes_in_common)
+  sparse_matrix_list <- lapply(sparse_matrix_list, filter_genes, cg)
   
+  check.cols <- c()
   for(i in seq(ncol(combtab))){
-    check.cols <- identical(rownames(sparse_matrix_list[[combtab[1,i]]]), rownames(sparse_matrix_list[[combtab[2,i]]]))
+    check.cols <- c(check.cols, identical(rownames(sparse_matrix_list[[combtab[1,i]]]), rownames(sparse_matrix_list[[combtab[2,i]]])) )
   }
   if(all(check.cols)){
     outmat <- do.call(cbind, sparse_matrix_list)
