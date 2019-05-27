@@ -6,4 +6,4 @@
 
 module load R/3.5.1
 
-Rscript infercnv_analysis_bsub.R
+Rscript infercnv_analysis.R

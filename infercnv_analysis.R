@@ -1,12 +1,17 @@
 library( infercnv )
 library( Matrix )
 
-wd <- "/icgc/dkfzlsdf/analysis/hipo2/hipo_K43R/InferCNV/"
+args <- commandArgs(trailingOnly = TRUE)
+if(length(args)!=1){
+  quit()
+}
+source(args[1])
+
 setwd(wd)
 
-counts.sparse.matrix.name <- file.path(wd,"sc.10x.counts_K43R-ZPMZFJ-T1T2-N1.RData")
-cell.annotation.name <- file.path(wd,"cellAnnotations_K43R-ZPMZFJ-T1T2-N1.txt")
-out.folder.name <- file.path(wd,"K43R-ZPMZFJ-T1T2-N1")
+counts.sparse.matrix.name <- file.path(wd,counts.sparse.matrix.name)
+cell.annotation.name <- file.path(wd,cell.annotation.name)
+out.folder.name <- file.path(wd,"results")
 
 load(counts.sparse.matrix.name)
 

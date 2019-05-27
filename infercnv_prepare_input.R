@@ -1,9 +1,12 @@
 library( Matrix )
 
-wd <- "/icgc/dkfzlsdf/analysis/hipo2/hipo_K43R/InferCNV/"
-setwd(wd)
+args <- commandArgs(trailingOnly = TRUE)
+if(length(args)!=1){
+  quit()
+}
+source(args[1])
 
-source("infercnv_hipo/hipo_samples_configure_file.R")
+setwd(wd)
 
 # Accomodating 10X Data
 
@@ -101,7 +104,7 @@ cellAnnotations <- data.frame(cell_ids=colnames(mat.matrix.sparse),
 write.table(cellAnnotations, file=cell.annotation.name, col.names = F, row.names = F,quote=F, sep="\t")                   
 
 # genes ordering
-if( FALSE ){
+if( TRUE ){
   gene_ordering_file <- read.delim(file = "/icgc/dkfzlsdf/analysis/B260/users/n790i/tools/binning_the_genome/humangenes_biomart_GRCh37p13.sort.bed",stringsAsFactors = F,skip = 1,header = F)
   gene_ordering_file <- gene_ordering_file[which(gene_ordering_file$V1 != "MT"),]
   gene_ordering_file$index <- gene_ordering_file$V1

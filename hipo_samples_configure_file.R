@@ -18,11 +18,21 @@
 
 # K43R-ZPMZFJ T1+T2 vs N1
 cellranger_outs_folder_positive <- c("/icgc/dkfzlsdf/analysis/hipo2/hipo_K43R/cellranger_results_v3/K43R-ZPMZFJ-T1/outs/",
-                                     "/icgc/dkfzlsdf/analysis/hipo2/hipo_K43R/cellranger_results_v3/K43R-8YGUU8-T2/outs/")
+                                     "/icgc/dkfzlsdf/analysis/hipo2/hipo_K43R/cellranger_results_v3/K43R-ZPMZFJ-T2/outs/")
 labels.pos <- c("T1","T2")
 cellranger_outs_folder_negative <- "/icgc/dkfzlsdf/analysis/hipo2/hipo_K43R/cellranger_results_v3/K43R-ZPMZFJ-N1/outs/"
 cell.annotation.name <- "cellAnnotations_K43R-ZPMZFJ-T1T2-N1.txt"
 counts.sparse.matrix.name <- "sc.10x.counts_K43R-ZPMZFJ-T1T2-N1.RData"
+
+
+# # K43R-ZPMZFJ T1+T2 vs HCA plasma cells
+# cellranger_outs_folder_positive <- c("/icgc/dkfzlsdf/analysis/hipo2/hipo_K43R/cellranger_results_v3/K43R-ZPMZFJ-T1/outs/",
+#                                      "/icgc/dkfzlsdf/analysis/hipo2/hipo_K43R/cellranger_results_v3/K43R-8YGUU8-T2/outs/")
+# labels.pos <- c("T1","T2")
+# cellranger_outs_folder_negative <- "/icgc/dkfzlsdf/analysis/hipo2/hipo_K43R/cellranger_results_v3/K43R-ZPMZFJ-N1/outs/"
+# cell.annotation.name <- "cellAnnotations_K43R-ZPMZFJ-T1T2-N1.txt"
+# counts.sparse.matrix.name <- "sc.10x.counts_K43R-ZPMZFJ-T1T2-N1.RData"
+
 
 # K43R-8YGUU8 T3Z3
 # cellranger_outs_folder_positive <- "/icgc/dkfzlsdf/analysis/hipo2/hipo_K43R/cellranger_results_v3/K43R-8YGUU8-T3/outs/"
