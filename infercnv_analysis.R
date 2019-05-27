@@ -9,8 +9,6 @@ source(args[1])
 
 setwd(wd)
 
-counts.sparse.matrix.name <- file.path(wd,counts.sparse.matrix.name)
-cell.annotation.name <- file.path(wd,cell.annotation.name)
 out.folder.name <- file.path(wd,"results")
 
 load(counts.sparse.matrix.name)

@@ -39,16 +39,22 @@ getBarcodeNames <- function(cellranger_outs_folder){
 # get count matrix
 
 mat.pos.list <- lapply( cellranger_outs_folder_positive, getCountMat )
-mat.neg.list <- lapply( cellranger_outs_folder_negative, getCountMat )
 
-genes <- unique(unlist(lapply(mat.pos.list, rownames)))
-
-filter_genes <- function(x, genes){
-  x <- x[genes,]
-  return(x)
+if(is.na(cellranger_outs_folder_negative)){
+  load("/icgc/dkfzlsdf/analysis/hipo2/hipo_K43R/InferCNV/HumanCellAtlas_plasmacells/HCA_PCs_counts_ensmbl.RData")
+  mat.neg.list <- list()
+  mat.neg.list[[1]] <- hca
+} else {
+  mat.neg.list <- lapply( cellranger_outs_folder_negative, getCountMat )
 }
 
-mat.pos.list <- lapply(mat.pos.list, filter_genes, genes)
+# genes <- unique(unlist(lapply(mat.pos.list, rownames)))
+# 
+# filter_genes <- function(x, genes){
+#   x <- x[genes,]
+#   return(x)
+# }
+# mat.pos.list <- lapply(mat.pos.list, filter_genes, genes)
 
 # add label for cells from the same sample
 for(i in seq(length(mat.pos.list))){
@@ -60,17 +66,32 @@ for(i in seq(length(mat.neg.list))){
 }
 
 check_and_merge <- function(sparse_matrix_list){
-  check.cols <- c()
   if(length(sparse_matrix_list) < 2){
     return(sparse_matrix_list[[1]])
   }
   combtab <- combn(x = seq(length(sparse_matrix_list)),m = 2)
+  
+  genes_in_common <- list()
+  for(i in seq(ncol(combtab))){
+    genes_in_common[[i]] <- intersect(rownames(sparse_matrix_list[[combtab[1,i]]]), rownames(sparse_matrix_list[[combtab[2,i]]]))
+  }
+  
+  # only for 2 matrices : to be improved
+  genes_in_common <- unlist(genes_in_common)
+  
+  filter_genes <- function(x, genes){
+    x <- x[genes,]
+    return(x)
+  }
+  
+  sparse_matrix_list <- lapply(sparse_matrix_list, filter_genes, genes_in_common)
+  
   for(i in seq(ncol(combtab))){
     check.cols <- identical(rownames(sparse_matrix_list[[combtab[1,i]]]), rownames(sparse_matrix_list[[combtab[2,i]]]))
   }
   if(all(check.cols)){
-    mat.pos <- do.call(cbind, sparse_matrix_list)
-    return(mat.pos)
+    outmat <- do.call(cbind, sparse_matrix_list)
+    return(outmat)
   } else {
     return(NULL)
   }
