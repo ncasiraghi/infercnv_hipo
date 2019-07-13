@@ -10,7 +10,7 @@ source(args[1])
 setwd(wd)
 
 cellranger_outs_folder_negative <- NA
-cell.annotation.name <- paste0("cellAnnotations_",basename(wd),".txt")
+cell.annotation.name <- paste0("cellAnnotations_filtered_",basename(wd),".txt")
 counts.sparse.matrix.name <- paste0("sc.10x.counts_",basename(wd),".RData")
 
 out.folder.name <- file.path(wd,"results")
