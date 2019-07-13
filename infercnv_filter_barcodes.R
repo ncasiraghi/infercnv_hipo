@@ -30,5 +30,16 @@ for(p in unique(patients)){
   clean_barcodes[[basename(p)]] <- unique(unlist(lapply(unique(c(pre,post)),FUN = get_clean_barcode)))
 }
 
+# CellAnnotations to be filtered
+
+cellAnns <- list.files("/icgc/dkfzlsdf/analysis/hipo2/hipo_K43R/InferCNV/infercnv_outs/clean_barcodes",recursive = T,pattern = "cellAnnotations_",full.names = T)
+cellAnns <- grep(cellAnns,pattern = "filtered",invert = T,value = T)
+
+for(ann in cellAnns){
+  pt <- gsub(basename(ann),pattern = "cellAnnotations_|\\.txt",replacement = "")
+  a <- read.delim(ann,stringsAsFactors = F,as.is = T,header = F)
+  af <- a[which(a$V1 %in% clean_barcodes[[pt]]),]
+  write.table(af,file = gsub(ann,pattern = "cellAnnotations_",replacement = "cellAnnotations_filtered_"),col.names = F,row.names = F,sep = '\t',quote = F)
+}
 
 
