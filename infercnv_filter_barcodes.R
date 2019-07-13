@@ -38,7 +38,9 @@ cellAnns <- grep(cellAnns,pattern = "filtered",invert = T,value = T)
 for(ann in cellAnns){
   pt <- gsub(basename(ann),pattern = "cellAnnotations_|\\.txt",replacement = "")
   a <- read.delim(ann,stringsAsFactors = F,as.is = T,header = F)
-  af <- a[which(a$V1 %in% clean_barcodes[[pt]]),]
+  normal_cells <- a[which(a[,2] == "normal"),]
+  af <- a[which(a[,1] %in% clean_barcodes[[pt]]),]
+  af <- rbind(af,normal_cells)
   write.table(af,file = gsub(ann,pattern = "cellAnnotations_",replacement = "cellAnnotations_filtered_"),col.names = F,row.names = F,sep = '\t',quote = F)
 }
 
