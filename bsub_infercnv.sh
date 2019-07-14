@@ -6,4 +6,4 @@
 
 module load R/3.5.1
 
-Rscript /icgc/dkfzlsdf/analysis/hipo2/hipo_K43R/InferCNV/infercnv_hipo/infercnv_analysis.R /icgc/dkfzlsdf/analysis/hipo2/hipo_K43R/InferCNV/infercnv_outs/clean_barcodes/ZPMZFJ/config_infercnv.R
+Rscript /icgc/dkfzlsdf/analysis/hipo2/hipo_K43R/InferCNV/infercnv_hipo/infercnv_analysis.R /icgc/dkfzlsdf/analysis/hipo2/hipo_K43R/InferCNV/infercnv_outs/clean_barcodes/hipo_K43R_20_patients.txt
