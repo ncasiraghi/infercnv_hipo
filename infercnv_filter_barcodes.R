@@ -13,8 +13,7 @@ for(p in unique(patients)){
     rds <- grep(tumor_files,pattern = pattern,value = T)
     if(length(rds)>0){
       tumor <- readRDS(rds)
-      tumorDF <- tumor@meta.data[grep(rownames(tumor@meta.data),pattern = "_T[[:digit:]]_"),]
-      return(rownames(tumorDF))
+      return(rownames(tumor@meta.data))
     }
   }
   
