@@ -12,7 +12,7 @@ patients <- patients[which(basename(patients) %in% patients_to_keep)]
 
 # outs
 main_outdir <- "/icgc/dkfzlsdf/analysis/hipo2/hipo_K43R/InferCNV/infercnv_outs/clean_barcodes/PlasmaCells/"
-cell.annotation.name <- paste0("cellAnnotations_PlasmaCells.txt")
+cell.annotation.name <- paste0("cellAnnotations_filtered_PlasmaCells.txt")
 counts.sparse.matrix.name <- paste0("sc.10x.counts_PlasmaCells.RData")
 
 #wd <- patients[1]
