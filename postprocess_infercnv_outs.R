@@ -1,7 +1,7 @@
 library( phylogram )
 library( dendextend ) 
 
-infercnv.observations <- "/icgc/dkfzlsdf/analysis/hipo2/hipo_K43R/InferCNV/infercnv_outs/clean_barcodes/TS6ZX9/results/infercnv.preliminary.observations_dendrogram.txt"
+infercnv.observations <- "infercnv.observations_dendrogram.txt"
 
 # get and visualize the dendrogram
 
