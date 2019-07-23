@@ -1,11 +1,11 @@
 #!/bin/sh 
 #BSUB -J infercnv
-#BSUB -q verylong 
+#BSUB -q long 
 #BSUB -e bsub_infercnv.log 
 #BSUB -o bsub_infercnv.txt 
 
 module load R/3.5.1
-Rscript /icgc/dkfzlsdf/analysis/hipo2/hipo_K43R/InferCNV/infercnv_hipo/infercnv_analysis.R /icgc/dkfzlsdf/analysis/hipo2/hipo_K43R/InferCNV/infercnv_outs/clean_barcodes/PlasmaCells
+#Rscript /icgc/dkfzlsdf/analysis/hipo2/hipo_K43R/InferCNV/infercnv_hipo/infercnv_analysis.R /icgc/dkfzlsdf/analysis/hipo2/hipo_K43R/InferCNV/infercnv_outs/clean_barcodes/PlasmaCells
 #Rscript /icgc/dkfzlsdf/analysis/hipo2/hipo_K43R/InferCNV/infercnv_hipo/infercnv_analysis.R /icgc/dkfzlsdf/analysis/hipo2/hipo_K43R/InferCNV/infercnv_outs/clean_barcodes/2FTMUU 
 #Rscript /icgc/dkfzlsdf/analysis/hipo2/hipo_K43R/InferCNV/infercnv_hipo/infercnv_analysis.R /icgc/dkfzlsdf/analysis/hipo2/hipo_K43R/InferCNV/infercnv_outs/clean_barcodes/32ARQL 
 #Rscript /icgc/dkfzlsdf/analysis/hipo2/hipo_K43R/InferCNV/infercnv_hipo/infercnv_analysis.R /icgc/dkfzlsdf/analysis/hipo2/hipo_K43R/InferCNV/infercnv_outs/clean_barcodes/37A66E 
@@ -21,7 +21,7 @@ Rscript /icgc/dkfzlsdf/analysis/hipo2/hipo_K43R/InferCNV/infercnv_hipo/infercnv_
 #Rscript /icgc/dkfzlsdf/analysis/hipo2/hipo_K43R/InferCNV/infercnv_hipo/infercnv_analysis.R /icgc/dkfzlsdf/analysis/hipo2/hipo_K43R/InferCNV/infercnv_outs/clean_barcodes/PUVQFD 
 #Rscript /icgc/dkfzlsdf/analysis/hipo2/hipo_K43R/InferCNV/infercnv_hipo/infercnv_analysis.R /icgc/dkfzlsdf/analysis/hipo2/hipo_K43R/InferCNV/infercnv_outs/clean_barcodes/R1H4HE 
 #Rscript /icgc/dkfzlsdf/analysis/hipo2/hipo_K43R/InferCNV/infercnv_hipo/infercnv_analysis.R /icgc/dkfzlsdf/analysis/hipo2/hipo_K43R/InferCNV/infercnv_outs/clean_barcodes/R1V8RN 
-#Rscript /icgc/dkfzlsdf/analysis/hipo2/hipo_K43R/InferCNV/infercnv_hipo/infercnv_analysis.R /icgc/dkfzlsdf/analysis/hipo2/hipo_K43R/InferCNV/infercnv_outs/clean_barcodes/TS6ZX9 
+Rscript /icgc/dkfzlsdf/analysis/hipo2/hipo_K43R/InferCNV/infercnv_hipo/infercnv_analysis.R /icgc/dkfzlsdf/analysis/hipo2/hipo_K43R/InferCNV/infercnv_outs/clean_barcodes/TS6ZX9 
 #Rscript /icgc/dkfzlsdf/analysis/hipo2/hipo_K43R/InferCNV/infercnv_hipo/infercnv_analysis.R /icgc/dkfzlsdf/analysis/hipo2/hipo_K43R/InferCNV/infercnv_outs/clean_barcodes/VP6CSY 
 #Rscript /icgc/dkfzlsdf/analysis/hipo2/hipo_K43R/InferCNV/infercnv_hipo/infercnv_analysis.R /icgc/dkfzlsdf/analysis/hipo2/hipo_K43R/InferCNV/infercnv_outs/clean_barcodes/XF2DTB 
 #Rscript /icgc/dkfzlsdf/analysis/hipo2/hipo_K43R/InferCNV/infercnv_hipo/infercnv_analysis.R /icgc/dkfzlsdf/analysis/hipo2/hipo_K43R/InferCNV/infercnv_outs/clean_barcodes/YK554L 
