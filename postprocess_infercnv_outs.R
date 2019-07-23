@@ -18,6 +18,6 @@ tp <- color_branches(dend, k = NCLONES)
 plot(tp,leaflab = 'none')
 
 g <- cutree(dend,k = NCLONES)
-groups <- data.frame(barcode=gsub(names(g),pattern = "pos_N1",replacement = ""),
+groups <- data.frame(barcode=gsub(names(g),pattern = "pos_N1|pos_T1",replacement = ""),
                      cluster=as.numeric(g),
                      stringsAsFactors = F)
