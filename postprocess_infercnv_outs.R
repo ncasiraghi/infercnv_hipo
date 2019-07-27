@@ -11,7 +11,7 @@ plot(dend,labels = FALSE,hang = -1,xlab = "scRNA",ylab = "distance")
 # cut the dendrogram 
 NCLONES <- 4
 
-tp <- color_branches(dend, k = NCLONES)
+tp <- color_branches(dend, k = NCLONES,groupLabels = T)
 plot(tp,leaflab = 'none')
 
 g <- cutree(dend,k = NCLONES)
