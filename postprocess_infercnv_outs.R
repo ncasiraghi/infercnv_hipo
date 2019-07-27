@@ -5,14 +5,15 @@ infercnv.observations <- "infercnv.observations_dendrogram.txt"
 
 # get and visualize the dendrogram
 
+
 dend <- as.hclust(read.dendrogram(infercnv.observations))
 plot(dend,labels = FALSE,hang = -1,xlab = "scRNA",ylab = "distance")
 
 # cut the dendrogram 
-NCLONES <- 4
+NCLONES <- 10
 
 tp <- color_branches(dend, k = NCLONES,groupLabels = T)
-plot(tp,leaflab = 'none')
+plot(tp,leaflab = 'none',horiz = F) # set horiz = TRUE to plot dendrogram as in infercnv heatmap
 
 g <- cutree(dend,k = NCLONES)
 
