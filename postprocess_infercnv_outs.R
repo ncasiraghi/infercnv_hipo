@@ -13,14 +13,31 @@ clean_barcode <- function(b){
 
 ## standard output from InferCNV
 
-infercnv.observations <- "/icgc/dkfzlsdf/analysis/hipo2/hipo_K43R/InferCNV/infercnv_outs/clean_barcodes/TS6ZX9/results/infercnv.observations_dendrogram.txt"
+infercnv.observations <- "/icgc/dkfzlsdf/analysis/hipo2/hipo_K43R/InferCNV/infercnv_outs/clean_barcodes/N5CC3E/results/infercnv.observations_dendrogram.txt"
+
+## different input
+
+library(infercnv)
+setwd('/icgc/dkfzlsdf/analysis/hipo2/hipo_K43R/InferCNV/infercnv_outs/clean_barcodes/N5CC3E/results')
+
+infercnv_obj = readRDS('run.final.infercnv_obj')
+
+tumor_expr_data <- infercnv_obj@observation_grouped_cell_indices
+
+bc <- read.delim('../cellAnnotations_filtered_N5CC3E.txt',header = F)
+barcodes <- unique(grep(bc$V1,pattern = '-1neg',invert = TRUE,value = T))
+
+tumor_expr_data <- tumor_expr_data[,barcodes]
+dend <- hclust(d = dist(t(tumor_expr_data)), method = "ward.D2")
 
 # get and visualize the dendrogram
 dend <- as.hclust(read.dendrogram(infercnv.observations))
 plot(dend,labels = FALSE,hang = -1,xlab = "scRNA",ylab = "distance")
 
+length(dend$labels)
+
 # cut the dendrogram 
-NCLONES <- 10
+NCLONES <- 5
 
 tp <- color_branches(dend, k = NCLONES,groupLabels = T)
 plot(tp,leaflab = 'none',horiz = F) # set horiz = TRUE to plot dendrogram as in infercnv heatmap
