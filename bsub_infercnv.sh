@@ -1,6 +1,6 @@
 #!/bin/sh 
 #BSUB -J infercnv
-#BSUB -q long 
+#BSUB -q verylong 
 #BSUB -e bsub_infercnv.log 
 #BSUB -o bsub_infercnv.txt 
 

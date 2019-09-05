@@ -2,6 +2,7 @@ library( phylogram )
 library( dendextend ) 
 library( gplots )
 library( data.table )
+library( infercnv )
 
 # functions
 
@@ -17,7 +18,6 @@ infercnv.observations <- "/icgc/dkfzlsdf/analysis/hipo2/hipo_K43R/InferCNV/infer
 
 ## different input
 
-library(infercnv)
 setwd('/icgc/dkfzlsdf/analysis/hipo2/hipo_K43R/InferCNV/infercnv_outs/clean_barcodes/N5CC3E/results')
 
 infercnv_obj = readRDS('run.final.infercnv_obj')
@@ -37,7 +37,7 @@ plot(dend,labels = FALSE,hang = -1,xlab = "scRNA",ylab = "distance")
 length(dend$labels)
 
 # cut the dendrogram 
-NCLONES <- 5
+NCLONES <- 4
 
 tp <- color_branches(dend, k = NCLONES,groupLabels = T)
 plot(tp,leaflab = 'none',horiz = F) # set horiz = TRUE to plot dendrogram as in infercnv heatmap
