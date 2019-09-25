@@ -31,7 +31,7 @@ infercnv_obj = CreateInfercnvObject(raw_counts_matrix=mat.matrix.sparse,
 infercnv_obj = infercnv::run(infercnv_obj,
                              cutoff=0.1,  # use 1 for smart-seq, 0.1 for 10x-genomics
                              out_dir=out.folder.name,  # dir is auto-created for storing outputs
-                             cluster_by_groups=FALSE,   # cluster
+                             cluster_by_groups=TRUE,   # cluster
                              denoise=T,
                              HMM=F
 )

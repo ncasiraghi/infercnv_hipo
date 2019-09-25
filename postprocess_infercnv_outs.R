@@ -1,37 +1,36 @@
 library( phylogram )
 library( dendextend ) 
-library( gplots )
+#library( gplots )
 library( data.table )
-library( infercnv )
-
-# functions
-
-clean_barcode <- function(b){
-  id <- unlist(strsplit(b,split = '_'))[2]
-  new <- paste0('TS6ZX9_',id,'_',gsub(b,pattern = "-1pos_T1|-1pos_N1",replacement = ""))
-  return(new)
-}
+#library( infercnv )
+library( DECIPHER )
 
 ## standard output from InferCNV
 
-infercnv.observations <- "/icgc/dkfzlsdf/analysis/hipo2/hipo_K43R/InferCNV/infercnv_outs/clean_barcodes/N5CC3E/results/infercnv.observations_dendrogram.txt"
+# change this to load a different time point: _T1, _T2 or _Z2
+infercnv.observations <- "/icgc/dkfzlsdf/analysis/hipo2/hipo_K43R/InferCNV/infercnv_outs/clean_barcodes/N5CC3E/results/infercnv.observations_dendrogram_T1.txt"
 
 ## different input
-
-setwd('/icgc/dkfzlsdf/analysis/hipo2/hipo_K43R/InferCNV/infercnv_outs/clean_barcodes/N5CC3E/results')
-
-infercnv_obj = readRDS('run.final.infercnv_obj')
-
-tumor_expr_data <- infercnv_obj@observation_grouped_cell_indices
-
-bc <- read.delim('../cellAnnotations_filtered_N5CC3E.txt',header = F)
-barcodes <- unique(grep(bc$V1,pattern = '-1neg',invert = TRUE,value = T))
-
-tumor_expr_data <- tumor_expr_data[,barcodes]
-dend <- hclust(d = dist(t(tumor_expr_data)), method = "ward.D2")
+# functions
+# clean_barcode <- function(b){
+#   id <- unlist(strsplit(b,split = '_'))[2]
+#   new <- paste0('TS6ZX9_',id,'_',gsub(b,pattern = "-1pos_T1|-1pos_N1",replacement = ""))
+#   return(new)
+# }
+# setwd('/icgc/dkfzlsdf/analysis/hipo2/hipo_K43R/InferCNV/infercnv_outs/clean_barcodes/N5CC3E/results')
+# 
+# infercnv_obj = readRDS('run.final.infercnv_obj')
+# 
+# tumor_expr_data <- infercnv_obj@observation_grouped_cell_indices
+# 
+# bc <- read.delim('../cellAnnotations_filtered_N5CC3E.txt',header = F)
+# barcodes <- unique(grep(bc$V1,pattern = '-1neg',invert = TRUE,value = T))
+# 
+# tumor_expr_data <- tumor_expr_data[,barcodes]
+# dend <- hclust(d = dist(t(tumor_expr_data)), method = "ward.D2")
 
 # get and visualize the dendrogram
-dend <- as.hclust(read.dendrogram(infercnv.observations))
+dend <- as.hclust(ReadDendrogram(file = infercnv.observations,))
 plot(dend,labels = FALSE,hang = -1,xlab = "scRNA",ylab = "distance")
 
 length(dend$labels)
@@ -43,13 +42,16 @@ tp <- color_branches(dend, k = NCLONES,groupLabels = T)
 plot(tp,leaflab = 'none',horiz = F) # set horiz = TRUE to plot dendrogram as in infercnv heatmap
 
 g <- cutree(dend,k = NCLONES)
-barcodes <- unlist(lapply(names(g),clean_barcode))
+#barcodes <- unlist(lapply(names(g),clean_barcode))
 
-groups <- data.frame(BARCODE=barcodes,
+groups <- data.frame(BARCODE=names(g),#BARCODE=barcodes,
                      CLONE=as.numeric(g),
                      stringsAsFactors = F)
 
-#save(groups,file = 'TS6ZX9_Barcodes_Clones.RData',compress = TRUE)
+
+
+
+
 
 
 ## custom analysis from InferCNV final matrix
